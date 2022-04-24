@@ -13,8 +13,7 @@
         "production": "mix --production && npm run ssr:build",
         "heroku-postbuild": "npm run prod",
         "ssr:build": "mix --production --mix-config=webpack.ssr.mix.js",
-        "ssr:serve": "node public/js/ssr.js",
-        "postinstall": "npm run prod"
+        "ssr:serve": "node public/js/ssr.js"
     },
     "dependencies": {
         "@inertiajs/inertia": "^0.11.0",
