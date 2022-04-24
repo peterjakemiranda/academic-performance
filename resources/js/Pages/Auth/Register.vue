@@ -30,13 +30,13 @@ const submit = () => {
 
         <form @submit.prevent="submit">
             <div>
-                <BreezeLabel for="name" value="First Name" />
-                <BreezeInput id="name" type="text" class="mt-1 block w-full" v-model="form.first_name" required autofocus autocomplete="name" />
+                <BreezeLabel for="first_name" value="First Name" />
+                <BreezeInput id="first_name" type="text" class="mt-1 block w-full" v-model="form.first_name" required autofocus autocomplete="name" />
             </div>
 
             <div class="mt-4">
-                <BreezeLabel for="name" value="Last Name" />
-                <BreezeInput id="name" type="text" class="mt-1 block w-full" v-model="form.last_name" required autofocus autocomplete="name" />
+                <BreezeLabel for="last_name" value="Last Name" />
+                <BreezeInput id="last_name" type="text" class="mt-1 block w-full" v-model="form.last_name" required autofocus autocomplete="name" />
             </div>
 
             <div class="mt-4">
