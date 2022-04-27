@@ -8,8 +8,8 @@
     <div class="max-w-3xl bg-white rounded-md shadow overflow-hidden">
       <form @submit.prevent="store">
         <div class="flex flex-wrap -mb-8 -mr-6 p-8">
-          <text-input v-model="form.number" :error="form.errors.number" class="pb-8 pr-6 w-full lg:w-1/2" label="First name" />
-          <text-input v-model="form.name" :error="form.errors.name" class="pb-8 pr-6 w-full lg:w-1/2" label="Last name" />
+          <text-input v-model="form.number" :error="form.errors.number" class="pb-8 pr-6 w-full lg:w-1/2" label="ID Number" />
+          <text-input v-model="form.name" :error="form.errors.name" class="pb-8 pr-6 w-full lg:w-1/2" label="Name" />
           <select-input v-model="form.course_id" :error="form.errors.course_id" class="pb-8 pr-6 w-full lg:w-1/2" label="Major">
             <option v-for="course in courses" :key="course.id" :value="course.id">{{ course.name }}</option>
           </select-input>
