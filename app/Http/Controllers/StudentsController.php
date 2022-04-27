@@ -42,7 +42,7 @@ class StudentsController extends Controller
 
     public function store()
     {
-        Auth::user()->account->students()->create(
+        Student::create(
             Request::validate([
                 'number' => ['required', 'max:20'],
                 'name' => ['required', 'max:100'],
