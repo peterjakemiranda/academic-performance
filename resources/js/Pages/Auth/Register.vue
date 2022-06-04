@@ -5,8 +5,10 @@ import BreezeInput from '@/Components/Input.vue';
 import BreezeLabel from '@/Components/Label.vue';
 import BreezeValidationErrors from '@/Components/ValidationErrors.vue';
 import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
+import FlashMessages from '@/Shared/FlashMessages';
 
 const form = useForm({
+    number: '',
     first_name: '',
     last_name: '',
     email: '',
@@ -27,11 +29,16 @@ const submit = () => {
         <Head title="Register" />
 
         <BreezeValidationErrors class="mb-4" />
-
+        <flash-messages />
         <form @submit.prevent="submit">
             <div>
+                <BreezeLabel for="number" value="Student Number" />
+                <BreezeInput id="number" type="text" class="mt-1 block w-full" v-model="form.number" required autofocus autocomplete="number" />
+            </div>
+
+            <div class="mt-4">
                 <BreezeLabel for="first_name" value="First Name" />
-                <BreezeInput id="first_name" type="text" class="mt-1 block w-full" v-model="form.first_name" required autofocus autocomplete="name" />
+                <BreezeInput id="first_name" type="text" class="mt-1 block w-full" v-model="form.first_name" required autocomplete="name" />
             </div>
 
             <div class="mt-4">

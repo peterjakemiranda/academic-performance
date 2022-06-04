@@ -30,6 +30,10 @@ Route::get('/', [DashboardController::class, 'index'])
     ->name('dashboard')
     ->middleware('auth');
 
+Route::get('/student-dashboard', [DashboardController::class, 'student'])
+    ->name('student-dashboard')
+    ->middleware('auth');
+
 // Users
 
 Route::get('users', [UsersController::class, 'index'])

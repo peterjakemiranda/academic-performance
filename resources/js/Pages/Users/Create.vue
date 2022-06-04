@@ -12,9 +12,10 @@
           <text-input v-model="form.last_name" :error="form.errors.last_name" class="pb-8 pr-6 w-full lg:w-1/2" label="Last name" />
           <text-input v-model="form.email" :error="form.errors.email" class="pb-8 pr-6 w-full lg:w-1/2" label="Email" />
           <text-input v-model="form.password" :error="form.errors.password" class="pb-8 pr-6 w-full lg:w-1/2" type="password" autocomplete="new-password" label="Password" />
-          <select-input v-if="auth.user.admin" v-model="form.admin" :error="form.errors.admin" class="pb-8 pr-6 w-full lg:w-1/2" label="Admin">
-            <option :value="true">Yes</option>
-            <option :value="false">No</option>
+          <select-input v-if="auth.user.admin" v-model="form.role" :error="form.errors.role" class="pb-8 pr-6 w-full lg:w-1/2" label="Role">
+            <option :value="'student'">Student</option>
+            <option :value="'registrar'">Registrar</option>
+            <option :value="'admin'">Admin</option>
           </select-input>
         </div>
         <div class="flex items-center justify-end px-8 py-4 bg-gray-50 border-t border-gray-100">
@@ -54,7 +55,7 @@ export default {
         last_name: '',
         email: '',
         password: '',
-        admin: false,
+        role: 'student',
         photo: null,
       }),
     }

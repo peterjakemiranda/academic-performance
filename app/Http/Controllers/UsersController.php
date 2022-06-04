@@ -25,6 +25,7 @@ class UsersController extends Controller
                     'name' => $user->name,
                     'email' => $user->email,
                     'admin' => $user->admin,
+                    'role' => $user->role,
                     'photo' => $user->photo_path ? URL::route('image', ['path' => $user->photo_path, 'w' => 40, 'h' => 40, 'fit' => 'crop']) : null,
                     'deleted_at' => $user->deleted_at,
                 ]),
@@ -43,7 +44,7 @@ class UsersController extends Controller
             'last_name' => ['required', 'max:50'],
             'email' => ['required', 'max:50', 'email', Rule::unique('users')],
             'password' => ['nullable'],
-            'admin' => ['required', 'boolean'],
+            'role' => ['required', 'string'],
             'photo' => ['nullable', 'image'],
         ]);
 
@@ -52,7 +53,7 @@ class UsersController extends Controller
             'last_name' => Request::get('last_name'),
             'email' => Request::get('email'),
             'password' => Request::get('password'),
-            'admin' => Request::get('admin'),
+            'role' => Request::get('role'),
             'photo_path' => Request::file('photo') ? Request::file('photo')->store('users') : null,
         ]);
 
@@ -68,7 +69,9 @@ class UsersController extends Controller
                 'last_name' => $user->last_name,
                 'email' => $user->email,
                 'admin' => $user->admin,
+                'role' => $user->role,
                 'photo' => $user->photo_path ? URL::route('image', ['path' => $user->photo_path, 'w' => 60, 'h' => 60, 'fit' => 'crop']) : null,
+                'grades' => optional($user->student)->grades,
                 'deleted_at' => $user->deleted_at,
             ],
         ]);
@@ -85,11 +88,11 @@ class UsersController extends Controller
             'last_name' => ['required', 'max:50'],
             'email' => ['required', 'max:50', 'email', Rule::unique('users')->ignore($user->id)],
             'password' => ['nullable'],
-            'admin' => ['required', 'boolean'],
+            'role' => ['required', 'string'],
             'photo' => ['nullable', 'image'],
         ]);
 
-        $user->update(Request::only('first_name', 'last_name', 'email', 'admin'));
+        $user->update(Request::only('first_name', 'last_name', 'email', 'role'));
 
         if (Request::file('photo')) {
             $user->update(['photo_path' => Request::file('photo')->store('users')]);

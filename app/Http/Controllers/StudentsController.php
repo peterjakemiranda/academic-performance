@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use App\Models\Course;
+use App\Models\User;
+use Illuminate\Http\Request as HttpRequest;
+use Illuminate\Support\Str;
 
 class StudentsController extends Controller
 {
@@ -40,15 +43,26 @@ class StudentsController extends Controller
         ]);
     }
 
-    public function store()
+    public function store(HttpRequest $request)
     {
-        Student::create(
-            Request::validate([
-                'number' => ['required', 'max:20'],
-                'name' => ['required', 'max:100'],
-                'course_id' => ['nullable', Rule::exists('courses', 'id')],
-            ])
-        );
+        Request::validate([
+            'number' => ['required', 'max:20'],
+            'name' => ['required', 'max:100'],
+            'course_id' => ['nullable', Rule::exists('courses', 'id')],
+            'password' => ['nullable', 'require_if:email'],
+        ]);
+        if($student = Student::create($request->only(['number', 'name', 'course_od']))) {
+            if ($request->email) {
+                $name = explode(',', $request->name);
+                $user = User::create([
+                    'first_name' => $name[1],
+                    'last_name' => $name[0],
+                    'email' => $request->email,
+                    'password' => $request->password,
+                ]);
+                $student->update(['user_id' => $user->id]);
+            }
+        }
 
         return Redirect::route('students')->with('success', 'Student created.');
     }
@@ -60,6 +74,7 @@ class StudentsController extends Controller
                 'id' => $student->id,
                 'number' => $student->number,
                 'name' => $student->name,
+                'user' => $student->user,
                 'course_id' => $student->course_id,
                 'deleted_at' => $student->deleted_at,
             ],
@@ -70,18 +85,31 @@ class StudentsController extends Controller
         ]);
     }
 
-    public function update(Student $student)
+    public function update(Student $student, HttpRequest $request)
     {
-        $student->update(
-            Request::validate([
-                'number' => ['required', 'max:20'],
-                'name' => ['required', 'max:100'],
-                'course_id' => [
-                    'nullable',
-                    Rule::exists('courses', 'id'),
-                ],
-            ])
-        );
+        $student->update(Request::validate([
+            'number' => ['required', 'max:20'],
+            'name' => ['required', 'max:100'],
+            'course_id' => [
+                'nullable',
+                Rule::exists('courses', 'id'),
+            ],
+        ]));
+        if ($request->get('email')) {
+            $name = explode(',', $request->name);
+            $data = [
+                'first_name' => $name[1],
+                'last_name' => $name[0],
+            ];
+            if ($request->password) {
+                $data['password'] = $request->password;
+            }
+            $user = User::updateOrCreate(
+                ['email' => $request->email],
+                $data
+            );
+            $student->update(['user_id' => $user->id]);
+        }
 
         return Redirect::back()->with('success', 'Student updated.');
     }

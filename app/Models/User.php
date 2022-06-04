@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role'
     ];
 
     /**
@@ -34,13 +35,16 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    protected $appends = [
+        'admin'
+    ];
+
     /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
      */
     protected $casts = [
-        'admin' => 'boolean',
         'email_verified_at' => 'datetime',
     ];
 
@@ -52,6 +56,11 @@ class User extends Authenticatable
     public function getNameAttribute()
     {
         return $this->first_name.' '.$this->last_name;
+    }
+
+    public function getAdminAttribute()
+    {
+        return $this->role == 'admin' ? 1 : 0;
     }
 
     public function setPasswordAttribute($password)
@@ -94,5 +103,10 @@ class User extends Authenticatable
                 $query->onlyTrashed();
             }
         });
+    }
+
+    public function student()
+    {
+        return $this->hasOne(Student::class);
     }
 }

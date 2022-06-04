@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Charts\GPAChart;
+use App\Charts\GPAStudentChart;
 use Inertia\Inertia;
 use App\Models\Grade;
 
@@ -10,6 +11,14 @@ class DashboardController extends Controller
 {
     public function index(GPAChart $chart)
     {
+        if (auth()->user()->role == 'registrar') {
+            return redirect('/grades');
+        }
+
+        if (auth()->user()->role == 'student') {
+            return redirect('/users/'.auth()->id().'/edit');
+        }
+
         $schoolYears = Grade::schoolYears();
         $semesters = [1 => '1st Semester', 2 => '2nd Semester'];
         $charts = [];
@@ -81,5 +90,29 @@ class DashboardController extends Controller
             }
         }
         return Inertia::render('Dashboard/Index', ['charts' => $charts]);
+    }    
+    
+    public function student(GPAStudentChart $chart)
+    {
+        $schoolYears = Grade::schoolYears();
+        $charts = [];
+        foreach( $schoolYears as $schoolYear) {
+                $gpaPerYear = Grade::where('student_id', auth()->user()->student->id)->where('school_year', $schoolYear)->get();
+                if ($gpaPerYear->count()) {
+                    $grades = $gpaPerYear->sortKeys();
+
+                    $semesterGrouping = [
+                        '1' => null,
+                        '2' => null,
+                    ];
+                    foreach( $grades as $key => $grade) {
+                        $semesterGrouping[$grade->semester] = $grade->gpa;
+                    }
+                    $charts[] = $chart->build($schoolYear, ['1st Semester', '2nd Semester'], array_values($semesterGrouping));
+                }
+        }
+        return Inertia::render('Dashboard/Student', ['charts' => $charts]);
     }
 }
+
+

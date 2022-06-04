@@ -15,6 +15,8 @@
           <select-input v-model="form.course_id" :error="form.errors.course_id" class="pb-8 pr-6 w-full lg:w-1/2" label="Major">
             <option v-for="course in courses" :key="course.id" :value="course.id">{{ course.name }}</option>
           </select-input>
+          <text-input v-model="form.email" :error="form.errors.email" class="pb-8 pr-6 w-full lg:w-1/2" label="Email" />
+          <text-input type="password" v-model="form.password" :error="form.errors.password" class="pb-8 pr-6 w-full lg:w-1/2" label="Password" />
         </div>
         <div class="flex items-center px-8 py-4 bg-gray-50 border-t border-gray-100">
           <button v-if="!student.deleted_at" class="text-red-600 hover:underline" tabindex="-1" type="button" @click="destroy">Delete Student</button>
@@ -53,6 +55,8 @@ export default {
       form: this.$inertia.form({
         number: this.student.number,
         name: this.student.name,
+        email: this.student?.user?.email,
+        password: '',
         course_id: this.student.course_id,
       }),
     }

@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
+use App\Models\Student;
+use Illuminate\Support\Facades\Redirect;
 
 class RegisteredUserController extends Controller
 {
@@ -35,11 +37,13 @@ class RegisteredUserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'number' => 'required|string|max:255|exists:students,number',
+            'first_name' => 'required|string|max:255',
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+        ],[ 'number.exists' => 'The student :attribute doesn\'t exists on our record.']);
 
         $user = User::create([
             'first_name' => $request->first_name,
@@ -47,6 +51,8 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+
+        Student::where('number', $request->number)->update(['user_id' => $user->id]);
 
         event(new Registered($user));
 
