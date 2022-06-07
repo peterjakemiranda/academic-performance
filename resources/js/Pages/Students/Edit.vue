@@ -7,25 +7,27 @@
       {{ form.name }} #{{ form.number }}
     </h1>
     <trashed-message v-if="student.deleted_at" class="mb-6" @restore="restore"> This student has been deleted. </trashed-message>
-    <div class="max-w-3xl bg-white rounded-md shadow overflow-hidden">
-      <form @submit.prevent="update">
-        <div class="flex flex-wrap -mb-8 -mr-6 p-8">
-          <text-input v-model="form.number" :error="form.errors.number" class="pb-8 pr-6 w-full lg:w-1/2" label="Student Number" />
-          <text-input v-model="form.name" :error="form.errors.name" class="pb-8 pr-6 w-full lg:w-1/2" label="Name" />
-          <select-input v-model="form.course_id" :error="form.errors.course_id" class="pb-8 pr-6 w-full lg:w-1/2" label="Major">
-            <option v-for="course in courses" :key="course.id" :value="course.id">{{ course.name }}</option>
-          </select-input>
-          <text-input v-model="form.email" :error="form.errors.email" class="pb-8 pr-6 w-full lg:w-1/2" label="Email" />
-          <text-input type="password" v-model="form.password" :error="form.errors.password" class="pb-8 pr-6 w-full lg:w-1/2" label="Password" />
-        </div>
-        <div class="flex items-center px-8 py-4 bg-gray-50 border-t border-gray-100">
-          <button v-if="!student.deleted_at" class="text-red-600 hover:underline" tabindex="-1" type="button" @click="destroy">Delete Student</button>
-          <loading-button :loading="form.processing" class="btn-indigo ml-auto" type="submit">Update Student</loading-button>
-        </div>
-      </form>
-    </div>
-    <div class="w-1/2 ml-10 bg-white rounded-md shadow overflow-hidden"  v-if="student?.grades?.length">
-      <grade-list :grades="student.grades"/>
+    <div class="flex">
+      <div class="max-w-3xl bg-white rounded-md shadow overflow-hidden">
+        <form @submit.prevent="update">
+          <div class="flex flex-wrap -mb-8 -mr-6 p-8">
+            <text-input v-model="form.number" :error="form.errors.number" class="pb-8 pr-6 w-full lg:w-1/2" label="Student Number" />
+            <text-input v-model="form.name" :error="form.errors.name" class="pb-8 pr-6 w-full lg:w-1/2" label="Name" />
+            <select-input v-model="form.course_id" :error="form.errors.course_id" class="pb-8 pr-6 w-full lg:w-1/2" label="Major">
+              <option v-for="course in courses" :key="course.id" :value="course.id">{{ course.name }}</option>
+            </select-input>
+            <text-input v-model="form.email" :error="form.errors.email" class="pb-8 pr-6 w-full lg:w-1/2" label="Email" />
+            <text-input type="password" v-model="form.password" :error="form.errors.password" class="pb-8 pr-6 w-full lg:w-1/2" label="Password" />
+          </div>
+          <div class="flex items-center px-8 py-4 bg-gray-50 border-t border-gray-100">
+            <button v-if="!student.deleted_at" class="text-red-600 hover:underline" tabindex="-1" type="button" @click="destroy">Delete Student</button>
+            <loading-button :loading="form.processing" class="btn-indigo ml-auto" type="submit">Update Student</loading-button>
+          </div>
+        </form>
+      </div>
+      <div class="w-1/2 ml-10 bg-white rounded-md shadow overflow-hidden"  v-if="student?.grades?.length">
+        <grade-list :grades="student.grades"/>
+      </div>
     </div>
   </div>
 </template>

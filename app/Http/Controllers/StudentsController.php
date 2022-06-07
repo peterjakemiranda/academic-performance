@@ -75,6 +75,7 @@ class StudentsController extends Controller
                 'number' => $student->number,
                 'name' => $student->name,
                 'user' => $student->user,
+                'grades' => $student->grades,
                 'course_id' => $student->course_id,
                 'deleted_at' => $student->deleted_at,
             ],
