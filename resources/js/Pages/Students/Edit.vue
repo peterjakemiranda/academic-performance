@@ -24,8 +24,8 @@
         </div>
       </form>
     </div>
-    <div class="w-1/2 ml-10 bg-white rounded-md shadow overflow-hidden"  v-if="user?.grades?.length">
-      <grade-list :grades="user.grades"/>
+    <div class="w-1/2 ml-10 bg-white rounded-md shadow overflow-hidden"  v-if="student?.grades?.length">
+      <grade-list :grades="student.grades"/>
     </div>
   </div>
 </template>
