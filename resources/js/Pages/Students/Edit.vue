@@ -24,6 +24,9 @@
         </div>
       </form>
     </div>
+    <div class="w-1/2 ml-10 bg-white rounded-md shadow overflow-hidden"  v-if="user?.grades?.length">
+      <grade-list :grades="user.grades"/>
+    </div>
   </div>
 </template>
 
@@ -34,6 +37,7 @@ import TextInput from '@/Shared/TextInput'
 import SelectInput from '@/Shared/SelectInput'
 import LoadingButton from '@/Shared/LoadingButton'
 import TrashedMessage from '@/Shared/TrashedMessage'
+import GradeList from '@/Shared/GradeList'
 
 export default {
   components: {
@@ -43,6 +47,7 @@ export default {
     SelectInput,
     TextInput,
     TrashedMessage,
+    GradeList
   },
   layout: Layout,
   props: {
